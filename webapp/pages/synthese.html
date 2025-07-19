@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Synthèse - CDC Habitat</title>
+  
+  <!-- CSS Dependencies -->
+  <link rel="stylesheet" href="../../vendors/tabler/dist/css/tabler.min.css">
+  <link rel="stylesheet" href="../../vendors/bootstrap-icons/bootstrap-icons.css">
+  
+  <!-- DataTables CSS -->
+  <link rel="stylesheet" type="text/css" href="../../vendors/datatables/datatables.min.css">
+ 
+  
+  
+  <link rel="stylesheet" href="../css/style.css">
+  
+  <style>
+    /* Custom styles for DataTables */
+    .dataTables_wrapper .dataTables_paginate .paginate_button {
+      padding: 0.25em 0.65em;
+    }
+    .dataTables_wrapper .dataTables_length select {
+      padding: 0.25em 0.5em;
+    }
+    .progress {
+      height: 20px;
+      margin-bottom: 0;
+    }
+    .progress-bar {
+      line-height: 20px;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container-fluid g-0">
+    <div class="row g-0 min-vh-100">
+      <!-- Sidebar -->
+      <nav class="col-auto col-md-3 col-xl-2 sidebar-cdc d-flex flex-column p-3">
+        <a class="navbar-brand d-flex align-items-center mb-4" href="#">
+          <img src="../logo.png" alt="CDC Habitat">
+        </a>
+        <ul class="navbar-nav flex-column w-100 mb-4">
+          <li class="nav-item mb-2">
+            <a class="nav-link" href="../index.html"><i class="bi bi-house me-2"></i>Accueil</a>
+          </li>
+          <li class="nav-item mb-2">
+            <a class="nav-link" href="gestion.html"><i class="bi bi-table me-2"></i>Gestion des XLSB</a>
+          </li>
+          <li class="nav-item mb-2">
+            <a class="nav-link active" href="synthese.html"><i class="bi bi-bar-chart me-2"></i>Synthèse</a>
+          </li>
+          <li class="nav-item mb-2">
+            <a class="nav-link" href="#"><i class="bi bi-gear me-2"></i>Paramètres</a>
+          </li>
+        </ul>
+        <hr>
+        <div class="mt-auto small text-center text-white-50">&copy; 2025 CDC Habitat</div>
+      </nav>
+      
+      <!-- Main Content -->
+      <main class="col-md-9 ms-sm-auto col-xl-10 px-md-4 py-4">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+          <h1 class="h2">Tableau de bord Synthèse</h1>
+        </div>
+
+        <!-- Dans le contenu principal -->
+        <main class="col-md-9 ms-sm-auto col-xl-10 px-md-4 py-4">
+          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+              <h1 class="h2">Tableau de bord Synthèse</h1>
+              <div class="btn-toolbar mb-2 mb-md-0">
+                  <button id="btn-rafraichir" class="btn btn-sm btn-outline-secondary">
+                      <i class="bi bi-arrow-clockwise me-1"></i>Rafraîchir
+                  </button>
+              </div>
+          </div>
+
+          <!-- Filtres -->
+          <div class="card mb-4">
+              <div class="card-header">
+                  <h5 class="card-title mb-0">Filtres et Recherche</h5>
+              </div>
+              <div class="card-body">
+                  <div id="filtres-container" class="row g-3">
+                      <!-- Les filtres seront ajoutés dynamiquement ici -->
+                  </div>
+              </div>
+          </div>
+
+          <!-- Tableau de synthèse -->
+          <div class="card mb-4">
+              <div id="tableau-synthese">
+                  <!-- Le tableau sera chargé ici -->
+              </div>
+          </div>
+
+          <!-- Graphique -->
+          <div class="card">
+              <div class="card-header">
+                  <h5 class="card-title mb-0">Visualisation des données</h5>
+              </div>
+              <div class="card-body">
+                  <div id="graphique-synthese" style="height: 400px;">
+                      <!-- Le graphique sera chargé ici -->
+                  </div>
+              </div>
+          </div>
+        </main>
+              </main>
+    </div>
+  </div>
+
+  <script>
+    // Global variable to store data
+    let bddData = null;
+  </script>
+  
+  <!-- Scripts -->
+  <script src="../../vendors/jquery/jquery.min.js"></script>
+  <script src="../../vendors/bootstrap/bootstrap.bundle.min.js"></script>
+  <script src="../../vendors/chart/chart.min.js"></script>
+  <script src="../../vendors/datatables/datatables.min.js"></script>
+  <script src="../../vendors/datatables/dataTables.buttons.min.js"></script>
+  <script src="../../vendors/jszip/jszip.min.js"></script>
+  <script src="../../vendors/pdfmake/pdfmake.min.js"></script>
+  <script src="../../vendors/pdfmake/vfs_fonts.js"></script>
+  <script src="../../vendors/datatables/buttons.html5.min.js"></script>
+  <script src="../../vendors/datatables/buttons.print.min.js"></script>
+  <script src="../../vendors/datatables/buttons.colVis.min.js"></script>
+  <script src="../../vendors/danfos/bundle.js"></script>
+  
+  <!-- Nos scripts -->
+  <script src="../js/add_tableaux.js"></script>
+  <script src="../js/add_graphiques.js"></script>
+  <script src="../js/tableau.js"></script>
+  <script src="../js/synthese.js"></script>
+  
+  <script>
+    // Initialisation du tableau de bord
+    document.addEventListener('DOMContentLoaded', function() {
+      // Initialisation des composants
+      initialiserTableauSynthese();
+      initialiserFiltres();
+      initialiserRecherche();
+      
+      // Gestionnaire d'événement pour le bouton d'ajout de conteneur
+      document.getElementById('btn-ajouter-container').addEventListener('click', function() {
+        ajouterNouveauContainer();
+      });
+    });
+  </script>
+</body>
+</html>
